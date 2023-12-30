@@ -1,0 +1,18 @@
+# Configuration file for MegaLinter
+# See all available variables at https://megalinter.github.io/configuration/ and in linters documentation
+
+DEFAULT_BRANCH: mega-linter-test-3 #grass8 #Temporary override of default branch
+APPLY_FIXES: all # all, none, or list of linter keys
+# ENABLE: # If you use ENABLE variable, all other languages/formats/tooling-formats will be disabled by default
+# ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
+# DISABLE:
+  # - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
+  # - SPELL # Uncomment to disable checks of spelling mistakes
+SHOW_ELAPSED_TIME: true
+FILEIO_REPORTER: false
+# DISABLE_ERRORS: true # Uncomment if you want MegaLinter to detect errors but not block CI to pass
+VALIDATE_ALL_CODEBASE: false # When set to false, only new or edited files will be parsed for validation.
+PYTHON_PYLINT_ARGUMENTS: -j 0 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the number of processors available to use.
+PYTHON_PYLINT_CLI_LINT_MODE: project
+CPP_CPPLINT_CLI_LINT_MODE: project
+COPYPASTE_JSCPD_DISABLE_ERRORS_IF_LESS_THAN: 1561 # Avoid adding new technical debt. Reduce this when the number of detections will lower.
