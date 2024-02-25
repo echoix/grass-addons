@@ -171,7 +171,7 @@ rm -f $TARGETHTMLDIR/*.*
 \mv /tmp/addons $TARGETHTMLDIR
 
 cp -rp dist.$ARCH/docs/html/* $TARGETHTMLDIR/
-echo "Copied pygrass progman to http://grass.osgeo.org/grass${VERSION}/manuals/libpython/"
+echo "Copied pygrass progman to https://grass.osgeo.org/grass${VERSION}/manuals/libpython/"
 
 echo "Injecting DuckDuckGo search field into manual main page..."
 (cd $TARGETHTMLDIR/ ; sed -i -e "s+</table>+</table><\!\-\- injected in cron_grass7_relbranch_build_binaries.sh \-\-> <center><iframe src=\"https://duckduckgo.com/search.html?site=grass.osgeo.org%26prefill=Search%20manual%20pages%20at%20DuckDuckGo\" style=\"overflow:hidden;margin:0;padding:0;width:410px;height:40px;\" frameborder=\"0\"></iframe></center>+g" index.html)
