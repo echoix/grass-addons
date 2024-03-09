@@ -161,4 +161,5 @@ jobs:
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
           CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
           GITHUB_ACTIONS: ""
+          GITHUB_EVENT_PATH: ""
           
