@@ -57,12 +57,12 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
         env:
           CHANGED_FILES: ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
-      - name: Add code suggestions
-        uses: reviewdog/action-suggester@3d7fde6859623ad6174df5fd662677a0eb63310a # v1.11.0
-        with:
-          tool_name: clang-format
-          fail_on_error: true
-          cleanup: false
+      # - name: Add code suggestions
+      #   uses: reviewdog/action-suggester@3d7fde6859623ad6174df5fd662677a0eb63310a # v1.11.0
+      #   with:
+      #     tool_name: clang-format
+      #     fail_on_error: true
+      #     cleanup: false
       - name: Explain that more files need to be fixed
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
         run: |
@@ -79,3 +79,11 @@ jobs:
           path: |
             .clang-format
             ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
+      - name: Save PR number
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: pr/
