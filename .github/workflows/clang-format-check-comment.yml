@@ -112,5 +112,6 @@ jobs:
           # repository: actions/toolkit
           run-id: ${{github.event.workflow_run.id }}
       - run: ls -la
+      - run: reviewdog -reporter=github-pr-review -filter-mode=nofilter
       # - uses: re
       # listWorkflowRunArtifacts
