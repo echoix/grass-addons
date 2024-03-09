@@ -78,6 +78,7 @@ jobs:
           echo ${{ github.event.number }} > ./pr/NR
       - uses: actions/upload-artifact@v4
         with:
+          retention-days: 1
           name: pr
           path: pr/
       - name: Explain that more files need to be fixed
