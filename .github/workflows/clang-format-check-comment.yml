@@ -104,7 +104,7 @@ jobs:
           script: |
             const { NR } = process.env
             var fs = require('fs');
-            var issue_number = Number(NR);
+            var issue_number = NR;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
