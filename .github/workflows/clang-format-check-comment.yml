@@ -56,7 +56,7 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
       - name: "Download artifact"
-        uses: actions/github-script@v3.1.0
+        uses: actions/github-script@v3.2.0
         with:
           script: |
             var artifacts = await github.actions.listWorkflowRunArtifacts({
