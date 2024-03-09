@@ -151,6 +151,7 @@ jobs:
             -f.diff.strip=1 \
             -filter-mode=nofilter \
             -tee \
+            -guess \
             -reporter="github-pr-review" < "${TMPFILE}"
         env:
           TMPFILE: diff-clang-format.patch
