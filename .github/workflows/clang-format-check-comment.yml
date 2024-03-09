@@ -21,9 +21,13 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          WORKFLOW_RUN_CONTEXT: ${{ toJson(github.event.workflow_run) }}
         run: |
           echo "$GITHUB_CONTEXT"
+      - name: Dump WORKFLOW_RUN context
+        continue-on-error: true
+        env:
+          WORKFLOW_RUN_CONTEXT: ${{ toJson(github.event.workflow_run) }}
+        run: |
           echo "$WORKFLOW_RUN_CONTEXT"
       - name: Dump GitHub context
         continue-on-error: true
