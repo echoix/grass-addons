@@ -72,6 +72,14 @@ jobs:
           retention-days: 1
           path: |
             diff-clang-format.patch
+      - name: Save PR number
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr
+          path: pr/
       - name: Explain that more files need to be fixed
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
         run: |
@@ -88,12 +96,3 @@ jobs:
           path: |
             .clang-format
             ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
-      - name: Save PR number
-        run: |
-          mkdir -p ./pr
-          echo ${{ github.event.number }} > ./pr/NR
-      - uses: actions/upload-artifact@v4
-        with:
-          name: pr
-          path: pr/
-
