@@ -104,5 +104,13 @@ jobs:
           reviewdog -h 2>&1 || true
           echo "::endgroup::"
       - run: reviewdog -list
+      - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
+        with:
+          name: diff
+          # github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+          github-token: ${{ github.token }}
+          # repository: actions/toolkit
+          run-id: ${{github.event.workflow_run.id }}
+      - run: ls -la
       # - uses: re
       # listWorkflowRunArtifacts
