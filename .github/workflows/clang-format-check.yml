@@ -20,6 +20,8 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+      - run: echo "$GITHUB_EVENT_PATH"
+      - run: cat "$GITHUB_EVENT_PATH"
       - name: Dump GitHub context
         continue-on-error: true
         env:
