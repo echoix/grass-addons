@@ -63,6 +63,15 @@ jobs:
       #     tool_name: clang-format
       #     fail_on_error: true
       #     cleanup: false
+      - run: git diff --unified=0 --no-color --output=diff-clang-format.patch
+      - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        if: always()
+        with:
+          name: diff
+          if-no-files-found: ignore
+          retention-days: 1
+          path: |
+            diff-clang-format.patch
       - name: Explain that more files need to be fixed
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
         run: |
@@ -87,10 +96,4 @@ jobs:
         with:
           name: pr
           path: pr/
-      - run: git diff --unified=0 --no-color --output=diff-clang-format.patch
-      - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
-        if: always()
-        with:
-          name: diff
-          path: |
-            diff-clang-format.patch
+
