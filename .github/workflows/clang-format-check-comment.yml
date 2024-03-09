@@ -121,3 +121,4 @@ jobs:
         env:
           TMPFILE: diff-clang-format.patch
           INPUT_TOOL_NAME: clang-format
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
