@@ -93,3 +93,9 @@ jobs:
               issue_number: issue_number,
               body: 'Everything is OK. Thank you for the PR!'
             });
+      - uses: reviewdog/action-setup@v1
+      - run: reviewdog -version
+      - run: reviewdog -help
+      - run: reviewdog -list
+      # - uses: re
+      # listWorkflowRunArtifacts
