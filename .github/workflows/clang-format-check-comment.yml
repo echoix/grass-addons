@@ -95,7 +95,7 @@ jobs:
             });
       - uses: reviewdog/action-setup@v1
       - run: reviewdog -version
-      - run: reviewdog -help
+      - run: reviewdog -h
       - run: reviewdog -list
       # - uses: re
       # listWorkflowRunArtifacts
