@@ -112,6 +112,12 @@ jobs:
           # repository: actions/toolkit
           run-id: ${{github.event.workflow_run.id }}
       - run: ls -la
-      - run: reviewdog -reporter=github-pr-review -filter-mode=nofilter
-      # - uses: re
-      # listWorkflowRunArtifacts
+      - run: |
+          reviewdog \
+            -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
+            -f=diff \
+            -f.diff.strip=1 \
+            -reporter="github-pr-review" < "${TMPFILE}"
+        env:
+          TMPFILE: diff-clang-format.patch
+          INPUT_TOOL_NAME: clang-format
