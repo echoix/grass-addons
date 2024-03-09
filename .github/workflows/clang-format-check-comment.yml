@@ -130,6 +130,8 @@ jobs:
           # repository: actions/toolkit
           run-id: ${{github.event.workflow_run.id }}
       - run: ls -la
+      - run: echo "$GITHUB_EVENT_PATH"
+      - run: cat "$GITHUB_EVENT_PATH"
       - run: |
           reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
