@@ -34,7 +34,7 @@ jobs:
           DIFF_OUTPUTS: ${{ toJson(steps.diff.outputs)}}
       - run: echo "$DIFF_OUTPUTS"
         env:
-          DIFF_OUTPUTS: ${{ toJson(fromJson(steps.diff.outputs.download-path))}}
+          DIFF_OUTPUTS: ${{ steps.diff.outputs.download-path}}
       # - name: Get tool name
       #   run: 
       - uses: reviewdog/action-setup@v1
