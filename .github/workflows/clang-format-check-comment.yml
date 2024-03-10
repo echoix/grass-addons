@@ -37,8 +37,8 @@ jobs:
           WORKFLOW_RUN_CONTEXT: ${{ toJson(github.event.workflow_run) }}
         run: |
           echo "$WORKFLOW_RUN_CONTEXT"
-      - name: Create a .git directory needed by reviewdog
-        run: git init
+      # - name: Create a .git directory needed by reviewdog
+      #   run: git init
       - name: "Download artifact"
         uses: actions/github-script@v7.0.1
         with:
