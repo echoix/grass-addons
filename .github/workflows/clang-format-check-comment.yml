@@ -18,29 +18,23 @@ jobs:
       (github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'failure')
     permissions:
-      # contents: read
-      # checks: write
-      # issues: write
       pull-requests: write
     steps:
-      # - uses: GitHubSecurityLab/actions-permissions/monitor@main
-      #   with:
-      #     config: ${{ vars.PERMISSIONS_CONFIG }}
-      # Debug
-      - name: Dump GitHub context
-        continue-on-error: true
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
       - name: Create a .git directory needed by reviewdog
         run: git init
-      - uses: reviewdog/action-setup@v1
       - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
+        id: diff
         with:
           name: diff
           github-token: ${{ github.token }}
           run-id: ${{github.event.workflow_run.id }}
+      - run: echo "$OUTPUTS_DIFF"
+        env:
+          OUTPUTS_DIFF: ${{ toJson(fromJson(github.steps.diff.outputs))}}
+      - run: echo "$OUTPUTS_DIFF"
+        env:
+          OUTPUTS_DIFF: ${{ toJson(fromJson(github.steps.diff.outputs.download-path))}}
+      - uses: reviewdog/action-setup@v1
       - run: |
           GITHUB_ACTIONS="" \
             reviewdog \
