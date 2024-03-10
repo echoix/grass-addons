@@ -225,6 +225,9 @@ jobs:
           cat "${TMPFILE}"
         env:
           FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
+      - run: cat "${FAKE_EVENT_PATH}"
+        env:
+          FAKE_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
       - run: |
           reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
