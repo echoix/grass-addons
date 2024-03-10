@@ -230,7 +230,7 @@ jobs:
         env:
           FAKE_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
       - run: |
-          reviewdog \
+          GITHUB_EVENT_PATH=/home/runner/work/grass-addons/grass-addons/fake_event.json  reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
             -f=diff \
             -f.diff.strip=1 \
