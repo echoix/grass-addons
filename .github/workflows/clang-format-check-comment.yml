@@ -1,20 +1,17 @@
 ---
 name: ClangFormat Check suggestions
 
-# read-write repo token
-# access to secrets
 on:
   workflow_run:
     workflows: ["ClangFormat Check"]
     types:
       - completed
-
+permissions: {}
 jobs:
   upload:
     runs-on: ubuntu-latest
+    # Only run on failures, since no changes are needed on success
     if: >
-      (github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success')  || 
       (github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'failure')
     permissions:
@@ -26,19 +23,9 @@ jobs:
         id: diff
         continue-on-error: true
         with:
-          # name: diff2
-          pattern: diff*
-          merge-multiple: true
+          name: diff
           github-token: ${{ github.token }}
           run-id: ${{github.event.workflow_run.id }}
-      - run: echo "$DIFF_OUTPUTS"
-        env:
-          DIFF_OUTPUTS: ${{ toJson(steps.diff.outputs)}}
-      - run: echo "$DIFF_OUTPUTS"
-        env:
-          DIFF_OUTPUTS: ${{ steps.diff.outputs.download-path}}
-      # - name: Get tool name
-      #   run: 
       - uses: reviewdog/action-setup@v1
       - run: |
           GITHUB_ACTIONS="" \
@@ -48,7 +35,6 @@ jobs:
               -f.diff.strip=1 \
               -filter-mode=nofilter \
               -guess \
-              -reporter="github-pr-check" \
               -reporter="github-pr-review" < "${TMPFILE}"
         env:
           TMPFILE: diff-clang-format.patch
@@ -57,4 +43,4 @@ jobs:
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
           CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
-          # CI_PULL_REQUEST:
+          # CI_PULL_REQUEST: "" # Populated from reviewdog's "-guess" flag since hard to get
