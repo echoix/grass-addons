@@ -219,6 +219,7 @@ jobs:
           FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
       - run: |
           TMPFILE="$(mktemp).json"
+          TMPFILE="fake_event.json"
           echo "$FAKE_EVENT" >> "${TMPFILE}"
           echo FAKE_EVENT_PATH="${TMPFILE}" >> "$GITHUB_ENV"
           echo ""
