@@ -19,9 +19,9 @@
 #include <grass/vector.h>
 #include <grass/glocale.h>
 
-FILE *openAscii(char * file)
- {
-  FILE *fp;
+FILE *openAscii(char *file)
+{
+    FILE *fp;
 
     if (file && file[0] != '-') {
         fp = fopen(file, "w");
