@@ -178,8 +178,8 @@ jobs:
                 "number": NR,
                 "base": { "repo": context.repo.repo },
                 "head": {
-                  "sha": "github.event.workflow_run.head_sha",
-                  "ref": "github.event.workflow_run.head_branch"
+                  "sha": context.payload.workflow_run.head_sha,
+                  "ref": context.payload.workflow_run.head_branch
                 }
               },
               "repository": {
