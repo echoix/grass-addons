@@ -18,12 +18,14 @@ jobs:
       (github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'failure')
     permissions:
-      # actions: read
-      contents: read
+      # contents: read
       checks: write
       issues: write
       pull-requests: write
     steps:
+      - uses: GitHubSecurityLab/actions-permissions/monitor@main
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       # Debug
       - name: Dump GitHub context
         continue-on-error: true
