@@ -27,6 +27,8 @@ jobs:
         continue-on-error: true
         with:
           # name: diff2
+          pattern: diff*
+          merge-multiple: true
           github-token: ${{ github.token }}
           run-id: ${{github.event.workflow_run.id }}
       - run: echo "$DIFF_OUTPUTS"
