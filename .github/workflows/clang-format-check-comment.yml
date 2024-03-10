@@ -24,6 +24,7 @@ jobs:
         run: git init
       - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
         id: diff
+        continue-on-error: true
         with:
           name: diff2
           github-token: ${{ github.token }}
