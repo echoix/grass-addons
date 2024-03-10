@@ -156,12 +156,15 @@ jobs:
         with:
           script: |
             return {
+              "issue1": context.issue,
+              "repo1": context.repo,
+              "payload1": context.payload,
               "context1": context,
               "gh1": github
             }
-      - run: echo "$FAKE_EVENT"
+      - run: echo "$FAKE_EVENT2"
         env:
-          FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event2.outputs.result)) }}
+          FAKE_EVENT2: ${{ toJson(fromJson(steps.fake-event2.outputs.result)) }}
       - name: "Create fake event object"
         id: fake-event
         uses: actions/github-script@v7.0.1
