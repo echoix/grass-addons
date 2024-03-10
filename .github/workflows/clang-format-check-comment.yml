@@ -153,31 +153,22 @@ jobs:
           NR: ${{ github.event.workflow_run.pull_requests[0].number }} # TODO: might not work from fork
         with:
           script: |
-           const { NR } = process.env;
+            const { NR } = process.env;
             return {
               "pull_request": {
                 "number": NR,
-                "base": {"repo": context.repo.repo},
+                "base": { "repo": context.repo.repo },
                 "head": {
                   "sha": "",
                   "ref": "",
-                  "repo": { "owner": {"id":null} }
+                  "repo": { "owner": { "id": null } }
                 }
               },
               "repository": {
                 "name": context.repo.repo,
-                "owner": {"login": context.repo.owner}
+                "owner": { "login": context.repo.owner }
               }
             }
-           
-            # var fs = require('fs');
-            # var issue_number = NR;
-            # await github.rest.issues.createComment({
-            #   owner: context.repo.owner,
-            #   repo: context.repo.repo,
-            #   issue_number: issue_number,
-            #   body: 'Everything is OK. Thank you for the PR!'
-            # });
       - run: echo "$FAKE_EVENT"
         env:
           FAKE_EVENT: ${{ toJson(steps.fake-event.outputs.result) }}
