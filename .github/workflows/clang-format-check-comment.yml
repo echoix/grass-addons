@@ -48,6 +48,7 @@ jobs:
               -f.diff.strip=1 \
               -filter-mode=nofilter \
               -guess \
+              -reporter="github-pr-check" \
               -reporter="github-pr-review" < "${TMPFILE}"
         env:
           TMPFILE: diff-clang-format.patch
