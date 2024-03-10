@@ -22,10 +22,11 @@ jobs:
       # checks: write
       issues: write
       # pull-requests: write
+      pull-requests: read
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@main
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
+      # - uses: GitHubSecurityLab/actions-permissions/monitor@main
+      #   with:
+      #     config: ${{ vars.PERMISSIONS_CONFIG }}
       # Debug
       - name: Dump GitHub context
         continue-on-error: true
