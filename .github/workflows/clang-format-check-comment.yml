@@ -176,7 +176,7 @@ jobs:
             const { NR } = process.env;
             return {
               "pull_request": {
-                "number": NR,
+                "number": Number(NR),
                 "base": { 
                   "repo": { "owner": { "id": context.payload.workflow_run.repository.owner.id } }
                 },
