@@ -31,6 +31,8 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+      - name: Create a .git directory needed by reviewdog
+        run: git init
       - name: "Download artifact"
         uses: actions/github-script@v7.0.1
         with:
