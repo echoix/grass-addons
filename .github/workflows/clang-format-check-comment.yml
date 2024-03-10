@@ -182,7 +182,7 @@ jobs:
       - run: |
           echo "$GITHUB_EVENT_PATH"
           echo "$GITHUB_SHA"
-          GITHUB_EVENT_PATH="${FAKE_GITHUB_EVENT_PATH}" GITHUB_SHA="${FAKE_GITHUB_SHA} reviewdog \
+          GITHUB_EVENT_PATH="${FAKE_GITHUB_EVENT_PATH}" GITHUB_SHA="${FAKE_GITHUB_SHA}" reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
             -f=diff \
             -f.diff.strip=1 \
