@@ -1,5 +1,5 @@
 ---
-name: ClangFormat Check suggestions
+name: Post PR code suggestions
 
 on:
   workflow_run:
@@ -28,8 +28,7 @@ jobs:
           run-id: ${{github.event.workflow_run.id }}
       - uses: reviewdog/action-setup@1d18b2938261447f64c39f831d7395e90ef5a40e # v1.2.1
       - run: |
-          GITHUB_ACTIONS="" \
-            reviewdog \
+          GITHUB_ACTIONS="" reviewdog \
               -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
               -f=diff \
               -f.diff.strip=1 \
