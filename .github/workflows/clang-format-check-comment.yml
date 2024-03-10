@@ -180,6 +180,7 @@ jobs:
           FAKE_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
       - run: git init
       - run: |
+          echo "$GITHUB_EVENT_PATH"
           reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
             -f=diff \
