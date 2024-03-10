@@ -181,7 +181,8 @@ jobs:
       - run: git init
       - run: |
           echo "$GITHUB_EVENT_PATH"
-          reviewdog \
+          echo "$GITHUB_SHA"
+          GITHUB_EVENT_PATH="${FAKE_GITHUB_EVENT_PATH}" GITHUB_SHA="${FAKE_GITHUB_SHA} reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
             -f=diff \
             -f.diff.strip=1 \
@@ -200,6 +201,7 @@ jobs:
           # GITHUB_ACTIONS: ""
           GITHUB_ACTIONS: true
           # GITHUB_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
-          GITHUB_EVENT_PATH: "/home/runner/work/grass-addons/grass-addons/fake_event.json"
+          FAKE_GITHUB_EVENT_PATH: "/home/runner/work/grass-addons/grass-addons/fake_event.json"
           GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
+          FAKE_GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
           GITHUB_EVENT_NAME: pull_request
