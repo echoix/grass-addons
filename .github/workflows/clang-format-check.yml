@@ -14,56 +14,7 @@ jobs:
   formatting-check:
     name: Formatting Check
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      checks: write
-      issues: write
-      pull-requests: write
     steps:
-      - run: echo "$GITHUB_EVENT_PATH"
-      - run: cat "$GITHUB_EVENT_PATH"
-      - name: Dump GitHub context
-        continue-on-error: true
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
-      - name: Dump WORKFLOW_RUN context
-        continue-on-error: true
-        env:
-          WORKFLOW_RUN_CONTEXT: ${{ toJson(github.event.workflow_run) }}
-        run: |
-          echo "$WORKFLOW_RUN_CONTEXT"
-      - name: Dump GitHub context
-        continue-on-error: true
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        continue-on-error: true
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        continue-on-error: true
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        continue-on-error: true
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        continue-on-error: true
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        continue-on-error: true
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - uses: DoozyX/clang-format-lint-action@11b773b1598aa4ae3b32f023701bca5201c3817d # v0.17
         with:
