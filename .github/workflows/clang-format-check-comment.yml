@@ -177,10 +177,13 @@ jobs:
             return {
               "pull_request": {
                 "number": NR,
-                "base": { "repo": context.repo.repo },
+                "base": { 
+                  "repo": { "owner": { "id": context.payload.workflow_run.repository.owner.id } }
+                },
                 "head": {
                   "sha": context.payload.workflow_run.head_sha,
-                  "ref": context.payload.workflow_run.head_branch
+                  "ref": context.payload.workflow_run.head_branch,
+                  "repo": { "owner": { "id": context.payload.workflow_run.head_repository.owner.id } }
                 }
               },
               "repository": {
