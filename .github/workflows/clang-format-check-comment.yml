@@ -180,11 +180,7 @@ jobs:
           FAKE_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
       - run: git init
       - run: |
-          echo "$GITHUB_EVENT_PATH"
-          echo "$GITHUB_SHA"
-          echo "$GITHUB_EVENT_NAME"
           GITHUB_ACTIONS="" \
-            CI_COMMIT="${FAKE_GITHUB_SHA}" \
             reviewdog \
               -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
               -f=diff \
@@ -197,11 +193,9 @@ jobs:
           INPUT_TOOL_NAME: clang-format
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # CI_PULL_REQUEST: 13
-          # CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
+          CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
           CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
-          # GITHUB_ACTIONS: ""
-          # GITHUB_ACTIONS: true
           # GITHUB_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
           FAKE_GITHUB_EVENT_PATH: "/home/runner/work/grass-addons/grass-addons/fake_event.json"
           # GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
