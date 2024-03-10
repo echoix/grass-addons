@@ -19,9 +19,9 @@ jobs:
       github.event.workflow_run.conclusion == 'failure')
     permissions:
       # contents: read
-      checks: write
+      # checks: write
       issues: write
-      pull-requests: write
+      # pull-requests: write
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@main
         with:
