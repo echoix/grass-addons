@@ -29,12 +29,12 @@ jobs:
           name: diff2
           github-token: ${{ github.token }}
           run-id: ${{github.event.workflow_run.id }}
-      - run: echo "$OUTPUTS_DIFF"
+      - run: echo "$DIFF_OUTPUTS"
         env:
-          OUTPUTS_DIFF: ${{ toJson(fromJson(steps.diff.outputs))}}
-      - run: echo "$OUTPUTS_DIFF"
+          DIFF_OUTPUTS: ${{ toJson(steps.diff.outputs)}}
+      - run: echo "$DIFF_OUTPUTS"
         env:
-          OUTPUTS_DIFF: ${{ toJson(fromJson(steps.diff.outputs.download-path))}}
+          DIFF_OUTPUTS: ${{ toJson(fromJson(steps.diff.outputs.download-path))}}
       # - name: Get tool name
       #   run: 
       - uses: reviewdog/action-setup@v1
