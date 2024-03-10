@@ -67,6 +67,11 @@ jobs:
         env:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
         run: echo "$MATRIX_CONTEXT"
+      - name: Clone base repo (not from fork)
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
       - name: "Download artifact"
         uses: actions/github-script@v7.0.1
         with:
