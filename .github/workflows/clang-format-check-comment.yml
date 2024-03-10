@@ -30,10 +30,12 @@ jobs:
           run-id: ${{github.event.workflow_run.id }}
       - run: echo "$OUTPUTS_DIFF"
         env:
-          OUTPUTS_DIFF: ${{ toJson(fromJson(github.steps.diff.outputs))}}
+          OUTPUTS_DIFF: ${{ toJson(fromJson(steps.diff.outputs))}}
       - run: echo "$OUTPUTS_DIFF"
         env:
-          OUTPUTS_DIFF: ${{ toJson(fromJson(github.steps.diff.outputs.download-path))}}
+          OUTPUTS_DIFF: ${{ toJson(fromJson(steps.diff.outputs.download-path))}}
+      # - name: Get tool name
+      #   run: 
       - uses: reviewdog/action-setup@v1
       - run: |
           GITHUB_ACTIONS="" \
