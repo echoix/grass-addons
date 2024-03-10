@@ -144,8 +144,18 @@ jobs:
           TMPFILE: diff-clang-format.patch
           INPUT_TOOL_NAME: clang-format
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
-          tmp=$(mktemp)
+      - name: "Create fake event object2"
+        id: fake-event2
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |
+            return {
+              "context1": context,
+              "gh1": github
+            }
+      - run: echo "$FAKE_EVENT"
+        env:
+          FAKE_EVENT: ${{ toJson(steps.fake-event2.outputs.result) }}
       - name: "Create fake event object"
         id: fake-event
         uses: actions/github-script@v7.0.1
