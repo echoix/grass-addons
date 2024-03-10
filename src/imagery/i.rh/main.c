@@ -24,10 +24,10 @@ double esat(double tamean);
 double eact(double esat, double rh);
 double eatm(double eact);
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char * argv[])
+ {
     struct Cell_head cellhd; /*region+header info */
-    char *mapset = "";       /*mapset name */
+ char *mapset =          "";       /*mapset name */
     int nrows, ncols;
     int row, col;
     struct GModule *module;
