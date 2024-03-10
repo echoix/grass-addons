@@ -31,14 +31,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-      - name: Dump WORKFLOW_RUN context
-        continue-on-error: true
-        env:
-          WORKFLOW_RUN_CONTEXT: ${{ toJson(github.event.workflow_run) }}
-        run: |
-          echo "$WORKFLOW_RUN_CONTEXT"
-      # - name: Create a .git directory needed by reviewdog
-      #   run: git init
       - name: "Download artifact"
         uses: actions/github-script@v7.0.1
         with:
@@ -90,16 +82,6 @@ jobs:
       #         body: 'Everything is OK. Thank you for the PR!'
       #       });
       - uses: reviewdog/action-setup@v1
-      - run: reviewdog -version
-      - run: |
-          if ! command -v reviewdog >/dev/null 2>&1; then
-            echo "reviewdog was not installed"
-            exit 1
-          fi
-          echo "::group::📖 reviewdog -h"
-          reviewdog -h 2>&1 || true
-          echo "::endgroup::"
-      - run: reviewdog -list
       - uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
         with:
           name: diff
@@ -110,75 +92,6 @@ jobs:
       - run: ls -la
       - run: echo "$GITHUB_EVENT_PATH"
       - run: cat "$GITHUB_EVENT_PATH"
-      - run: |
-          reviewdog \
-            -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
-            -f=diff \
-            -f.diff.strip=1 \
-            -filter-mode=nofilter \
-            -tee \
-            -reporter="github-pr-annotations" < "${TMPFILE}"
-        env:
-          TMPFILE: diff-clang-format.patch
-          INPUT_TOOL_NAME: clang-format
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Create fake event object2"
-        id: fake-event2
-        uses: actions/github-script@v7.0.1
-        with:
-          script: |
-            return {
-              "issue1": context.issue,
-              "repo1": context.repo,
-              "payload1": context.payload,
-              "context1": context,
-              "gh1": github
-            }
-      - run: echo "$FAKE_EVENT2"
-        env:
-          FAKE_EVENT2: ${{ toJson(fromJson(steps.fake-event2.outputs.result)) }}
-      - name: "Create fake event object"
-        id: fake-event
-        uses: actions/github-script@v7.0.1
-        env:
-          NR: 13 # TODO: might not work from fork
-          NR2: ${{ github.event.workflow_run.pull_requests[0].number }} # TODO: might not work from fork
-        with:
-          script: |
-            const { NR } = process.env;
-            return {
-              "pull_request": {
-                "number": Number(NR),
-                "base": { 
-                  "repo": { "owner": { "id": context.payload.workflow_run.repository.owner.id } }
-                },
-                "head": {
-                  "sha": context.payload.workflow_run.head_sha,
-                  "ref": context.payload.workflow_run.head_branch,
-                  "repo": { "owner": { "id": context.payload.workflow_run.head_repository.owner.id } }
-                }
-              },
-              "repository": {
-                "name": context.repo.repo,
-                "owner": { "login": context.repo.owner }
-              }
-            }
-      - run: echo "$FAKE_EVENT"
-        env:
-          FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
-      - run: |
-          TMPFILE="$(mktemp).json"
-          TMPFILE="fake_event.json"
-          echo "$FAKE_EVENT" >> "${TMPFILE}"
-          echo FAKE_EVENT_PATH="${TMPFILE}" >> "$GITHUB_ENV"
-          echo ""
-          cat "${TMPFILE}"
-        env:
-          FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
-      - run: realpath "${FAKE_EVENT_PATH}" && cat "${FAKE_EVENT_PATH}"
-        env:
-          FAKE_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
-      - run: git init
       - run: |
           GITHUB_ACTIONS="" \
             reviewdog \
@@ -197,36 +110,3 @@ jobs:
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
           CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
-          # GITHUB_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
-          FAKE_GITHUB_EVENT_PATH: "/home/runner/work/grass-addons/grass-addons/fake_event.json"
-          # GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
-          FAKE_GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
-          # GITHUB_EVENT_NAME: pull_request
-      # - run: |
-      #     echo "$GITHUB_EVENT_PATH"
-      #     echo "$GITHUB_SHA"
-      #     echo "$GITHUB_EVENT_NAME"
-      #     GITHUB_EVENT_PATH="${FAKE_GITHUB_EVENT_PATH}" \
-      #       GITHUB_SHA="${FAKE_GITHUB_SHA}" \
-      #       reviewdog \
-      #         -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
-      #         -f=diff \
-      #         -f.diff.strip=1 \
-      #         -filter-mode=nofilter \
-      #         -tee \
-      #         -reporter="github-pr-review" < "${TMPFILE}"
-      #   env:
-      #     TMPFILE: diff-clang-format.patch
-      #     INPUT_TOOL_NAME: clang-format
-      #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     # CI_PULL_REQUEST: 13
-      #     # CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
-      #     # CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
-      #     # CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
-      #     # GITHUB_ACTIONS: ""
-      #     GITHUB_ACTIONS: true
-      #     # GITHUB_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
-      #     FAKE_GITHUB_EVENT_PATH: "/home/runner/work/grass-addons/grass-addons/fake_event.json"
-      #     GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
-      #     FAKE_GITHUB_SHA: ${{ github.event.workflow_run.head_sha }}
-      #     GITHUB_EVENT_NAME: pull_request
