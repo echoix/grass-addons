@@ -226,7 +226,7 @@ jobs:
           cat "${TMPFILE}"
         env:
           FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
-      - run: cat "${FAKE_EVENT_PATH}"
+      - run: realpath "${FAKE_EVENT_PATH}" && cat "${FAKE_EVENT_PATH}"
         env:
           FAKE_EVENT_PATH: ${{ env.FAKE_EVENT_PATH }}
       - run: |
