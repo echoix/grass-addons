@@ -155,7 +155,7 @@ jobs:
             }
       - run: echo "$FAKE_EVENT"
         env:
-          FAKE_EVENT: ${{ toJson(steps.fake-event2.outputs.result) }}
+          FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event2.outputs.result)) }}
       - name: "Create fake event object"
         id: fake-event
         uses: actions/github-script@v7.0.1
@@ -169,8 +169,8 @@ jobs:
                 "number": NR,
                 "base": { "repo": context.repo.repo },
                 "head": {
-                  "sha": github.event.workflow_run.head_sha,
-                  "ref": github.event.workflow_run.head_branch
+                  "sha": "github.event.workflow_run.head_sha",
+                  "ref": "github.event.workflow_run.head_branch"
                 }
               },
               "repository": {
@@ -203,13 +203,15 @@ jobs:
       #       }
       - run: echo "$FAKE_EVENT"
         env:
-          FAKE_EVENT: ${{ toJson(steps.fake-event.outputs.result) }}
+          FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
       - run: |
           TMPFILE=$(mktemp) 
           echo "$FAKE_EVENT" >> "${TMPFILE}"
           echo FAKE_EVENT_PATH="${TMPFILE}" >> "$GITHUB_ENV"
+          echo ""
+          cat "${TMPFILE}"
         env:
-          FAKE_EVENT: ${{ toJson(steps.fake-event.outputs.result) }}
+          FAKE_EVENT: ${{ toJson(fromJson(steps.fake-event.outputs.result)) }}
       - run: |
           reviewdog \
             -name="${INPUT_TOOL_NAME:-reviewdog-suggester}" \
