@@ -192,7 +192,7 @@ jobs:
           TMPFILE: diff-clang-format.patch
           INPUT_TOOL_NAME: clang-format
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # CI_PULL_REQUEST: 13
+          CI_PULL_REQUEST: 13
           CI_COMMIT: ${{ github.event.workflow_run.head_sha }}
           CI_REPO_OWNER: ${{ github.event.workflow_run.repository.owner.login }}
           CI_REPO_NAME: ${{ github.event.workflow_run.repository.name }}
