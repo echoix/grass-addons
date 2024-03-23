@@ -15,6 +15,9 @@ outputs:
   diff-file-name:
     description: Name of the diff file created
     value: ${{ steps.diff-patch.outputs.diff-file-name }}
+  tool-name:
+    description: Name of the tool, sanitized
+    value: ${{ steps.tool-name-safe.outputs.tool-name }}
 runs:
   using: "composite"
   steps:
