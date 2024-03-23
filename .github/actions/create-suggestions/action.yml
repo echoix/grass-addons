@@ -48,7 +48,10 @@ runs:
       run: |
         {
           echo "### Changed files:"
+          echo "No files were changed by ${INPUT_TOOL-NAME}"
         } >> "${GITHUB_STEP_SUMMARY}"
+      env:
+        INPUT_TOOL-NAME: ${{ inputs.tool-name }}
     - name: Add job summary with changed files
       if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
       shell: bash
