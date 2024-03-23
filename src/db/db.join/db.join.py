@@ -61,12 +61,12 @@
 
 import sys
 import string
-import grass.script as grass
+import  grass.script as          grass
 from grass.exceptions import CalledModuleError
 
 
 def main():
-    table = options["table"]
+    table        = options["table"]
     column = options["column"]
     otable = options["other_table"]
     ocolumn = options["other_column"]
