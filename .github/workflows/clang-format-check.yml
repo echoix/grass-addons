@@ -14,6 +14,8 @@ jobs:
   formatting-check:
     name: Formatting Check
     runs-on: ubuntu-latest
+    env:
+      TOOL_NAME: clang-format
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
@@ -41,7 +43,7 @@ jobs:
         run: |
           {
             echo "### Changed files:"
-            echo "No files were changed by clang-format"
+            echo "No files were changed by ${TOOL_NAME}"
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Add job summary with changed files
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
@@ -56,7 +58,7 @@ jobs:
           CHANGED_FILES: ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
       - name: Create unified diff of changes
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
-        run: git diff --unified=0 --no-color --output=diff-clang-format.patch
+        run: git diff --unified=0 --no-color --output="diff-${TOOL_NAME}.patch"
       - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
         with:
@@ -64,7 +66,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 1
           path: |
-            diff-clang-format.patch
+            diff-${{ env.TOOL_NAME }}.patch
       - name: Add note to summary explaining that code suggestions will be applied if it is a PR
         if: ${{ (github.event_name == 'pull_request') && (steps.verify-changed-files.outputs.files_changed == 'true') }}
         run: |
@@ -76,7 +78,8 @@ jobs:
       - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
         if: always()
         with:
-          name: formatted-clang-format
+          name: formatted-${{ env.TOOL_NAME }}
+          if-no-files-found: ignore
           retention-days: 10
           path: |
             .clang-format

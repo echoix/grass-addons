@@ -30,6 +30,8 @@ jobs:
             black-version: 22.3.0
 
     runs-on: ${{ matrix.os }}
+    env:
+      TOOL_NAME: black
 
     steps:
       - uses: actions/checkout@v4
@@ -65,7 +67,7 @@ jobs:
         run: |
           {
             echo "### Changed files:"
-            echo "No files were changed by black"
+            echo "No files were changed by ${TOOL_NAME}"
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Add job summary with changed files
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
@@ -80,7 +82,7 @@ jobs:
           CHANGED_FILES: ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
       - name: Create unified diff of changes
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
-        run: git diff --unified=0 --no-color --output=diff-black-format.patch
+        run: git diff --unified=0 --no-color --output="diff-${TOOL_NAME}.patch"
       - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
         if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
         with:
@@ -88,4 +90,5 @@ jobs:
           if-no-files-found: ignore
           retention-days: 1
           path: |
-            diff-blackcat.patch
+            diff-${{ env.TOOL_NAME }}.patch
+
