@@ -224,8 +224,8 @@ runs:
         } >> "${GITHUB_STEP_SUMMARY}"
       env:
         FORMATTED_URL: >-
-          "[`formatted-${{ steps.tool-name-safe.outputs.tool-name }}`](${{
-             steps.upload-changes.outputs.artifact-url }})."
+          [`formatted-${{ steps.tool-name-safe.outputs.tool-name }}`](${{
+             steps.upload-changes.outputs.artifact-url }})
     - name: Fail action if some files were changed
       if: >-
         ${{ (steps.verify-changed-files.outputs.files_changed == 'true') && 
