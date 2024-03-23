@@ -12,6 +12,9 @@ outputs:
   files_changed:
     description: '"true" if some files were changed, "false" otherwise.'
     value: ${{ steps.files_changed.outputs.files_changed }}
+  diff-file-name:
+    description: Name of the diff file created
+    value: ${{ steps.diff-patch.outputs.diff-file-name }}
 runs:
   using: "composite"
   steps:
@@ -64,10 +67,33 @@ runs:
         } >> "${GITHUB_STEP_SUMMARY}"
       env:
         CHANGED_FILES: ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
+    - name: Sanitize tool name for file name and diff file name
+      id: tool-name-safe
+      shell: bash
+      env:
+        INPUT_TOOL-NAME: ${{ inputs.tool-name }}
+      run: |
+        sanitize() { # https://stackoverflow.com/a/44811468
+          local s="${1?need a string}" # receive input in first argument
+          s="${s//[^[:alnum:]]/-}"     # replace all non-alnum characters to -
+          s="${s//+(-)/-}"             # convert multiple - to single -
+          s="${s/#-}"                  # remove - from start
+          s="${s/%-}"                  # remove - from end
+          echo "${s,,}"                # convert to lowercase
+        }
+        tool_name_safe=$(sanitize "${INPUT_TOOL-NAME}")
+        echo "New tool name value: ${tool_name_safe}"
+        echo "tool-name=${tool_name_safe}" >> "${GITHUB_OUTPUT}"
+        echo "diff-file-name=diff-${tool_name_safe}.patch" >> "${GITHUB_OUTPUT}"
     - name: Create unified diff of changes
       if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
+      id: diff-patch
       shell: bash
-      run: git diff --unified=0 --no-color --output="diff-${TOOL_NAME}.patch"
+      run: |
+        git diff --unified=0 --no-color --output="${INPUT_DIFF_FILE_NAME}"
+        echo "diff-file-name=${INPUT_DIFF_FILE_NAME}" >> "${GITHUB_OUTPUT}"
+      env:
+        INPUT_DIFF_FILE_NAME: ${{ steps.tool-name-safe.outputs.diff-file-name }}
     - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
       if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
       with:
