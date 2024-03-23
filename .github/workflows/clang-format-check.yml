@@ -14,8 +14,6 @@ jobs:
   formatting-check:
     name: Formatting Check
     runs-on: ubuntu-latest
-    env:
-      TOOL_NAME: clang-format
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
@@ -25,4 +23,14 @@ jobs:
           source: "."
           clangFormatVersion: 15
           inplace: True
-      - uses: ./.github/actions/create-suggestions
+      - name: Create suggestion file
+        id: diff
+        uses: ./.github/actions/create-suggestions
+        with:
+          tool-name: clang-format
+      - name: Output diff-file-name
+        run: echo "${{ steps.diff.outputs.diff-file-name }}"
+      - name: Output files_changed
+        run: echo "${{ steps.diff.outputs.files_changed }}"
+      - name: Output changed-files
+        run: echo "${{ steps.diff.outputs.changed-files }}"
