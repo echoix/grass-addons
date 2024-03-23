@@ -51,10 +51,10 @@ runs:
       run: |
         {
           echo "### Changed files:"
-          echo "No files were changed by ${INPUT_TOOL-NAME}"
+          echo "No files were changed by ${INPUT_TOOL_NAME}"
         } >> "${GITHUB_STEP_SUMMARY}"
       env:
-        INPUT_TOOL-NAME: ${{ inputs.tool-name }}
+        INPUT_TOOL_NAME: ${{ inputs.tool-name }}
     - name: Add job summary with changed files
       if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
       shell: bash
@@ -71,7 +71,7 @@ runs:
       id: tool-name-safe
       shell: bash
       env:
-        INPUT_TOOL-NAME: ${{ inputs.tool-name }}
+        INPUT_TOOL_NAME: ${{ inputs.tool-name }}
       run: |
         sanitize() { # https://stackoverflow.com/a/44811468
           local s="${1?need a string}" # receive input in first argument
@@ -81,7 +81,7 @@ runs:
           s="${s/%-}"                  # remove - from end
           echo "${s,,}"                # convert to lowercase
         }
-        tool_name_safe=$(sanitize "${INPUT_TOOL-NAME}")
+        tool_name_safe=$(sanitize "${INPUT_TOOL_NAME}")
         echo "New tool name value: ${tool_name_safe}"
         echo "tool-name=${tool_name_safe}" >> "${GITHUB_OUTPUT}"
         echo "diff-file-name=diff-${tool_name_safe}.patch" >> "${GITHUB_OUTPUT}"
