@@ -119,6 +119,10 @@ runs:
         retention-days: 10
         path: |
           .clang-format
+          .clang-format
+          .clang-format
+          ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
+          ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
           ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
     - name: Explain that more files need to be fixed
       if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
