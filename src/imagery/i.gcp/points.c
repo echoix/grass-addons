@@ -11,7 +11,7 @@ void list_points(struct Control_Points *);
 /* copied from lib/imagery/points.c */
 static int I_read_control_points(FILE *fd, struct Control_Points *cp)
 {
-    char       buf[100];
+    char buf[100];
     double e1, e2, n1, n2;
     int status;
 
@@ -22,7 +22,7 @@ static int I_read_control_points(FILE *fd, struct Control_Points *cp)
      */
     cp->e1 = NULL;
     cp->e2 = NULL;
-    cp->n1    = NULL;
+    cp->n1 = NULL;
     cp->n2 = NULL;
     cp->status = NULL;
 
@@ -30,7 +30,7 @@ static int I_read_control_points(FILE *fd, struct Control_Points *cp)
         G_strip(buf);
         if (*buf == '#' || *buf == 0)
             continue;
-        if (sscanf(buf, "%lf%lf%lf%lf%d", & e1, &n1, &e2, &n2, &status) == 5)
+        if (sscanf(buf, "%lf%lf%lf%lf%d", &e1, &n1, &e2, &n2, &status) == 5)
             I_new_control_point(cp, e1, n1, e2, n2, status);
         else
             return -4;
