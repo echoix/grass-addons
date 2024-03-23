@@ -28,6 +28,7 @@ jobs:
         uses: ./.github/actions/create-upload-suggestions
         with:
           tool-name: clang-format
+          extra-upload-changes: .clang-format
       - name: Output diff-file-name
         run: echo "${{ steps.diff.outputs.diff-file-name }}"
       - name: Output tool-name
