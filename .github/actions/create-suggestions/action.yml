@@ -101,7 +101,7 @@ runs:
         if-no-files-found: ignore
         retention-days: 1
         path: |
-          diff-${{ env.TOOL_NAME }}.patch
+          ${{ steps.diff-patch.outputs.diff-file-name }}
     - name: Add note to summary explaining that code suggestions will be applied if it is a PR
       if: ${{ (github.event_name == 'pull_request') && (steps.verify-changed-files.outputs.files_changed == 'true') }}
       shell: bash
@@ -114,7 +114,7 @@ runs:
     - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
       if: always()
       with:
-        name: formatted-${{ env.TOOL_NAME }}
+        name: formatted-${{ steps.tool-name-safe.outputs.tool-name }}
         if-no-files-found: ignore
         retention-days: 10
         path: |
