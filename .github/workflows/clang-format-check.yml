@@ -23,9 +23,10 @@ jobs:
           source: "."
           clangFormatVersion: 15
           inplace: True
-      - name: Create suggestion file
+      - name: Create and uploads code suggestions to apply
         id: diff
         uses: ./.github/actions/create-upload-suggestions
         with:
           tool-name: clang-format
+          # To keep repo's file structure in formatted changes artifact
           extra-upload-changes: .clang-format
