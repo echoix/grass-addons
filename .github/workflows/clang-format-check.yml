@@ -29,11 +29,3 @@ jobs:
         with:
           tool-name: clang-format
           extra-upload-changes: .clang-format
-      - name: Output diff-file-name
-        run: echo "${{ steps.diff.outputs.diff-file-name }}"
-      - name: Output tool-name
-        run: echo "${{ steps.diff.outputs.tool-name }}"
-      - name: Output files_changed
-        run: echo "${{ steps.diff.outputs.files_changed }}"
-      - name: Output changed-files
-        run: echo "${{ steps.diff.outputs.changed-files }}"
