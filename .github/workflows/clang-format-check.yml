@@ -25,7 +25,7 @@ jobs:
           inplace: True
       - name: Create suggestion file
         id: diff
-        uses: ./.github/actions/create-suggestions
+        uses: ./.github/actions/create-upload-suggestions
         with:
           tool-name: clang-format
       - name: Output diff-file-name

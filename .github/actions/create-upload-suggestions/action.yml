@@ -1,4 +1,4 @@
-name: "Create suggestions"
+name: "Create and upload suggestions"
 description: "Creates a file containing changes applied by a tool"
 author: echoix
 inputs:
