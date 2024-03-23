@@ -25,17 +25,16 @@ runs:
           echo 'CHANGED_FILES<<EOF'
           git ls-files --other --modified --exclude-standard
           echo EOF
-        } >> "$GITHUB_OUTPUT"
+        } >> "${GITHUB_OUTPUT}"
     - name: Get if has changed files (list of changed files is not empty)
       id: files_changed
       shell: bash
       run: |
         if [[ -n "$CHANGED_FILES" ]]; then
-          echo "files_changed=true" >> "$GITHUB_OUTPUT"
+          echo "files_changed=true" >> "${GITHUB_OUTPUT}"
         else
-          echo "files_changed=false" >> "$GITHUB_OUTPUT"
+          echo "files_changed=false" >> "${GITHUB_OUTPUT}"
         fi
-
       env:
         CHANGED_FILES: ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
 
@@ -49,8 +48,7 @@ runs:
       run: |
         {
           echo "### Changed files:"
-          echo "No files were changed by ${TOOL_NAME}"
-        } >> "$GITHUB_STEP_SUMMARY"
+        } >> "${GITHUB_STEP_SUMMARY}"
     - name: Add job summary with changed files
       if: ${{ steps.verify-changed-files.outputs.files_changed == 'true' }}
       shell: bash
@@ -60,7 +58,7 @@ runs:
           echo '```'
           echo "${CHANGED_FILES}"
           echo '```'
-        } >> "$GITHUB_STEP_SUMMARY"
+        } >> "${GITHUB_STEP_SUMMARY}"
       env:
         CHANGED_FILES: ${{ steps.git-changed-files.outputs.CHANGED_FILES }}
     - name: Create unified diff of changes
@@ -83,7 +81,7 @@ runs:
           echo ''
           echo 'Suggestions can only be added near to lines changed in this PR.'
           echo 'If any fixes can be added as code suggestions, they will be added shortly from another workflow.'
-        } >> "$GITHUB_STEP_SUMMARY"
+        } >> "${GITHUB_STEP_SUMMARY}"
     - uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
       if: always()
       with:
@@ -101,5 +99,5 @@ runs:
           echo ''
           # shellcheck disable=SC2016
           echo 'All fixed files are included in the `formatted-*` artifact. This artifact can be downloaded and copied to the repository to replace unformatted files with the formatted files.'
-        } >> "$GITHUB_STEP_SUMMARY"
+        } >> "${GITHUB_STEP_SUMMARY}"
         exit 1
