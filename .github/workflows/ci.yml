@@ -109,7 +109,7 @@ jobs:
           export LD_LIBRARY_PATH=$(grass --config path)/lib:$LD_LIBRARY_PATH
           pytest --verbose --color=yes \
           --durations=0 --durations-min=0.5 \
-          -ra ./src/raster/r.estimap.recreation \
+          -ra ./grass-addons/src/raster/r.estimap.recreation \
           --continue-on-collection-errors \
           --ignore=./grass/
         continue-on-error: true 
