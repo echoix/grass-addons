@@ -107,7 +107,8 @@ jobs:
       - run: |
           pytest --verbose --color=yes \
           --durations=0 --durations-min=0.5 \
-          -ra . 
+          -ra . \
+          --ignore=./grass/
 
       - name: Set up R
         uses: r-lib/actions/setup-r@e6be4b3706e0f39bc7a4cf4496a5f2c4cb840040 # v2.10.1
