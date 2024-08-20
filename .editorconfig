@@ -37,3 +37,6 @@ indent_style = tab
 
 [*.{ini,py,py.tpl,rst}]
 indent_style = space
+
+[*.{c,cpp,h,hpp}]
+indent_size = unset
