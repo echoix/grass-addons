@@ -11,7 +11,7 @@ end_of_line = lf
 [*.{json,json5}]
 indent_size = 2
 
-[*.{yml,yaml,clang-format}]
+[*.{yml,yaml,cff,clang-format}]
 indent_size = 2
 indent_style = space
 
@@ -41,7 +41,22 @@ indent_style = space
 [*.{c,cpp,h,hpp}]
 indent_size = unset
 
-[*.{ascii,dat}]
+[LICENSE]
+indent_size = unset
+
+[*.{tex}]
+indent_size = unset
+
+[*.{f,f90}]
+indent_style = unset
+indent_size = unset
+end_of_line = unset
+charset = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+end_of_line = unset
+
+[*.{ascii,dat,c.org,h.org,diff,rtf}]
 indent_style = unset
 indent_size = unset
 end_of_line = unset
