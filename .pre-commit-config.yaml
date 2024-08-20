@@ -46,3 +46,14 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
+  - repo: local
+
+    hooks:
+      - id: editorconfig-checker
+        language: golang
+        name: "Check .editorconfig rules"
+        entry: editorconfig-checker
+        additional_dependencies:
+          [
+            github.com/editorconfig-checker/editorconfig-checker/v3/cmd/editorconfig-checker@v3.0.3,
+          ]
