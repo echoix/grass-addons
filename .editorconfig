@@ -1,0 +1,66 @@
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+
+[*.{json,json5}]
+indent_size = 2
+
+[*.{yml,yaml,cff,clang-format}]
+indent_size = 2
+indent_style = space
+
+[*.md]
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.{htm,html,js,ts,tsx,css,sass,scss,less,svg,vue}]
+indent_size = 2
+
+[*.{xml,config}]
+indent_size = 2
+
+[*.{cmd,bat}]
+end_of_line = crlf
+
+[*.sh]
+end_of_line = lf
+
+[{Makefile,*.Make}]
+indent_style = tab
+
+[*.{ini,py,py.tpl,rst}]
+indent_style = space
+
+[*.{c,cpp,h,hpp}]
+indent_size = unset
+
+[LICENSE]
+indent_size = unset
+
+[*.{tex}]
+indent_size = unset
+
+[*.{f,f90}]
+indent_style = unset
+indent_size = unset
+end_of_line = unset
+charset = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+end_of_line = unset
+
+[*.{ascii,dat,c.org,h.org,diff,rtf}]
+indent_style = unset
+indent_size = unset
+end_of_line = unset
+charset = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+end_of_line = unset

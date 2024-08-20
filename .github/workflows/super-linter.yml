@@ -32,7 +32,7 @@ jobs:
           # list of files that changed across commits
           fetch-depth: 0
       - name: Lint code base
-        uses: super-linter/super-linter@1fa6ba58a88783e9714725cf89ac26d53e80c148 # v6.9.0
+        uses: super-linter/super-linter@02a1172d274f021e4c70f66e23f1085eadd1064b # v7.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # By default, super-linter expect all linters to have their config
@@ -47,6 +47,7 @@ jobs:
           VALIDATE_CPP: false # Until a configuration file is created to not contradict clang-format
           VALIDATE_GITLEAKS: false # Until configured to ignore g.parser key in main.c files
           VALIDATE_HTML: false # Until configured, some valid findings
+          VALIDATE_HTML_PRETTIER: false # Until html files are reformatted
           VALIDATE_JSCPD: false # Too many detections, should be enabled only for changed files
           VALIDATE_LATEX: false # Until issues are fixed, some valid findings
           VALIDATE_NATURAL_LANGUAGE: false # Until issues are fixed, lots of valid suggestions
@@ -58,7 +59,7 @@ jobs:
           VALIDATE_PYTHON_PYLINT: false # Until issues are fixed
           VALIDATE_PYTHON_RUFF: false # Until ruff is configured and most issues fixed
           VALIDATE_R: false
-          VALIDATE_RENOVATE: false # Until configuration file is upgraded
+          # VALIDATE_RENOVATE: true
           VALIDATE_SHELL_SHFMT: false # Until reformatting failing files
           MARKDOWN_CONFIG_FILE: .markdownlint.yml
           YAML_CONFIG_FILE: .yamllint
