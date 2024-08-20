@@ -59,7 +59,7 @@ jobs:
           VALIDATE_PYTHON_PYLINT: false # Until issues are fixed
           VALIDATE_PYTHON_RUFF: false # Until ruff is configured and most issues fixed
           VALIDATE_R: false
-          VALIDATE_RENOVATE: false # Until configuration file is upgraded
+          # VALIDATE_RENOVATE: true
           VALIDATE_SHELL_SHFMT: false # Until reformatting failing files
           MARKDOWN_CONFIG_FILE: .markdownlint.yml
           YAML_CONFIG_FILE: .yamllint
