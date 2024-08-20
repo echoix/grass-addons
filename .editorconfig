@@ -13,6 +13,7 @@ indent_size = 2
 
 [*.{yml,yaml,clang-format}]
 indent_size = 2
+indent_style = space
 
 [*.md]
 trim_trailing_whitespace = true
@@ -34,13 +35,5 @@ end_of_line = lf
 [{Makefile,*.Make}]
 indent_style = tab
 
-[*.{cpp,hpp}]
-indent_size = 2
-
 [*.{ini,py,py.tpl,rst}]
 indent_style = space
-indent_size = 4
-
-[*.yml]
-indent_style = space
-indent_size = 2
