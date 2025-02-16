@@ -8,7 +8,7 @@ from grass.gunittest.main import test
 class TestPGACalib(TestCase):
     pga_params = dict(
         development_pressure="devpressure",
-        predictors=["slope", "lakes_dist_km", "streets_dist_km"],
+        predictors=["rfc_slope", "lakes_dist_km", "streets_dist_km"],
         n_dev_neighbourhood=15,
         devpot_params="data/potential.csv",
         num_neighbors=4,
@@ -26,21 +26,21 @@ class TestPGACalib(TestCase):
         cls.runModule("g.region", raster="lsat7_2002_30@PERMANENT")
         cls.runModule(
             "r.mapcalc",
-            expression="ndvi_2002 = double(lsat7_2002_40@PERMANENT - lsat7_2002_30@PERMANENT) / double(lsat7_2002_40@PERMANENT + lsat7_2002_30@PERMANENT)",
+            expression="rfc_ndvi_2002 = double(lsat7_2002_40@PERMANENT - lsat7_2002_30@PERMANENT) / double(lsat7_2002_40@PERMANENT + lsat7_2002_30@PERMANENT)",
         )
         cls.runModule(
             "r.mapcalc",
-            expression="ndvi_1987 = double(lsat5_1987_40@landsat - lsat5_1987_30@landsat) / double(lsat5_1987_40@landsat + lsat5_1987_30@landsat)",
+            expression="rfc_ndvi_1987 = double(lsat5_1987_40@landsat - lsat5_1987_30@landsat) / double(lsat5_1987_40@landsat + lsat5_1987_30@landsat)",
         )
         cls.runModule(
             "r.mapcalc",
-            expression="urban_1987 = if(ndvi_1987 <= 0.1 && isnull(lakes), 1, if(isnull(lakes), 0, null()))",
+            expression="urban_1987 = if(rfc_ndvi_1987 <= 0.1 && isnull(lakes), 1, if(isnull(lakes), 0, null()))",
         )
         cls.runModule(
             "r.mapcalc",
-            expression="urban_2002 = if(ndvi_2002 <= 0.1 && isnull(lakes), 1, if(isnull(lakes), 0, null()))",
+            expression="urban_2002 = if(rfc_ndvi_2002 <= 0.1 && isnull(lakes), 1, if(isnull(lakes), 0, null()))",
         )
-        cls.runModule("r.slope.aspect", elevation="elevation", slope="slope")
+        cls.runModule("r.slope.aspect", elevation="elevation", slope="rfc_slope")
         cls.runModule("r.grow.distance", input="lakes", distance="lakes_dist")
         cls.runModule("r.mapcalc", expression="lakes_dist_km = lakes_dist/1000.")
         cls.runModule("v.to.rast", input="streets_wake", output="streets", use="val")
@@ -62,15 +62,15 @@ class TestPGACalib(TestCase):
             flags="f",
             type="raster",
             name=[
-                "slope",
+                "rfc_slope",
                 "lakes_dist",
                 "lakes_dist_km",
                 "streets",
                 "streets_dist",
                 "streets_dist_km",
                 "devpressure",
-                "ndvi_2002",
-                "ndvi_1987",
+                "rfc_ndvi_2002",
+                "rfc_ndvi_1987",
                 "urban_1987",
                 "urban_2002",
             ],
