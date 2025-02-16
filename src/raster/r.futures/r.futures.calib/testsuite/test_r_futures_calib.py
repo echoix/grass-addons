@@ -2,7 +2,6 @@
 import os
 import filecmp
 from grass.gunittest.case import TestCase
-from grass.gunittest.main import test
 
 
 class TestPGACalib(TestCase):
@@ -185,4 +184,6 @@ class TestPGACalib(TestCase):
 
 
 if __name__ == "__main__":
+    from grass.gunittest.main import test
+
     test()
