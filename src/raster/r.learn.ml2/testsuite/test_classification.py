@@ -20,7 +20,6 @@ import os
 import grass.script as gs
 
 from grass.gunittest.case import TestCase
-from grass.gunittest.main import test
 
 
 class TestClassification(TestCase):
@@ -193,4 +192,6 @@ class TestClassification(TestCase):
 
 
 if __name__ == "__main__":
+    from grass.gunittest.main import test
+
     test()

@@ -40,6 +40,7 @@ class MyTestCase(unittest.TestCase):
         """Setup that is run before every test"""
         self.stack = RasterStack(self.predictors)
 
+    # @unittest.skip("s")
     def test_drop_single_label(self):
         """Test dropping a single RasterRow object from a RasterStack using
         a label"""

@@ -2,7 +2,6 @@ import os
 import sys
 import grass.script as gs
 from grass.gunittest.case import TestCase
-from grass.gunittest.main import test
 from grass.pygrass.utils import get_lib_path
 from grass.pygrass.vector.geometry import Point
 
@@ -124,4 +123,6 @@ class TestStaclib(TestCase):
 
 
 if __name__ == "__main__":
+    from grass.gunittest.main import test
+
     test()

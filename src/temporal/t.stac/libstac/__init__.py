@@ -1,1 +1,1 @@
-import staclib as libstac  # noqa
+from . import staclib as libstac  # noqa

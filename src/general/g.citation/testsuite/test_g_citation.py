@@ -5,7 +5,6 @@ import tempfile
 from stat import S_IREAD
 
 from grass.gunittest.case import TestCase
-from grass.gunittest.main import test
 from grass.gunittest.gmodules import SimpleModule
 
 
@@ -116,4 +115,6 @@ class CiteAllCase(TestCase):
 
 
 if __name__ == "__main__":
+    from grass.gunittest.main import test
+
     test()

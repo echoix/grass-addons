@@ -24,7 +24,6 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 import pandas as pd
 
 from grass.gunittest.case import TestCase
-from grass.gunittest.main import test
 
 
 class TestGridSearch(TestCase):
@@ -104,4 +103,6 @@ class TestGridSearch(TestCase):
 
 
 if __name__ == "__main__":
+    from grass.gunittest.main import test
+
     test()

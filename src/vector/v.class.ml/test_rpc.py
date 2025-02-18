@@ -7,7 +7,8 @@ Created on Sat Nov 23 01:47:42 2013
 
 from grass.pygrass.vector import VectorTopo
 from grass.pygrass.vector.geometry import Point
-from grass.pygrass.function import get_mapset_vector
+from grass.pygrass.utils import get_mapset_vector
+from grass.pygrass.rpc.base import RPCServerBase
 
 
 def add_points(vname, vmapset="", *points):
@@ -21,5 +22,5 @@ def add_points(vname, vmapset="", *points):
             vct.write(Point(x, y))
 
 
-ciface = RPCServer()
-check = ciface.call(function=add_points, args=("new", (1, 2), (2, 3), (3, 4)))
+# ciface = RPCServerBase()
+# check = ciface.call(function=add_points, args=("new", (1, 2), (2, 3), (3, 4)))

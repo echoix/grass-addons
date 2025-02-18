@@ -875,5 +875,6 @@ def main():
 
 if __name__ == "__main__":
     options, flags = gcore.parser()
+    # breakpoint()
     atexit.register(cleanup)
     sys.exit(main())

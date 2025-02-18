@@ -18,7 +18,7 @@ import os
 
 from numpy.testing import assert_almost_equal
 
-import gpot as gpot
+from libgshp import gpot as gpot
 from grass.gunittest.case import TestCase
 from grass.gunittest.gmodules import call_module
 from grass.gunittest.main import test

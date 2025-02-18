@@ -90,6 +90,7 @@ class TestPGACalib(TestCase):
 
     def test_pga_calib_library(self):
         """Test if generated patch library matches the reference"""
+        # breakpoint()
         self.assertModule(
             "r.futures.calib",
             flags="l",
@@ -127,6 +128,7 @@ class TestPGACalib(TestCase):
 
     def test_pga_calib_compactness(self):
         """Test if compactness calib file matches the reference"""
+        # breakpoint()
         self.assertModule(
             "r.futures.calib",
             development_start="urban_1987",
