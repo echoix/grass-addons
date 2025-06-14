@@ -82,9 +82,8 @@
 # % type: string
 # % required: no
 # % multiple: no
-# % label: Filter available lidar tiles by their title (e.g. use "Phase4")
-# % description: To avoid combining lidar from multiple years, use first -i flag and filter by tile title.
-# % guisection: Lidar
+# % label: Filter available tiles by their title (e.g. use "Phase4")
+# % description: To avoid combining tiles from multiple years, use first -i flag and filter by tile title.
 # %end
 
 # %option
@@ -423,7 +422,7 @@ def main():
     preserve_extracted_files = True
     use_existing_extracted_files = True
     preserve_imported_tiles = gui_k_flag
-    use_existing_imported_tiles = True
+    use_existing_imported_tiles = preserve_imported_tiles
 
     if not work_dir:
         work_dir = get_cache_dir("r_in_usgs")
@@ -521,7 +520,7 @@ def main():
             TNM_API_error = return_JSON["errors"]
             api_error_msg = "TNM API Error - {0}".format(str(TNM_API_error))
             gs.fatal(api_error_msg)
-        if gui_product == "lidar" and options["title_filter"]:
+        if options["title_filter"]:
             return_JSON["items"] = [
                 item
                 for item in return_JSON["items"]
@@ -574,7 +573,7 @@ def main():
         TNM_file_title = f["title"]
         TNM_file_URL = str(f["downloadURL"])
         TNM_file_size = int(f["sizeInBytes"]) if f["sizeInBytes"] else None
-        TNM_file_name = TNM_file_URL.split(product_url_split)[-1]
+        TNM_file_name = TNM_file_URL.rsplit(product_url_split, maxsplit=1)[-1]
         if gui_product == "ned":
             local_file_path = os.path.join(work_dir, ned_data_abbrv + TNM_file_name)
             local_zip_path = os.path.join(work_dir, ned_data_abbrv + TNM_file_name)
@@ -899,6 +898,10 @@ def main():
             if gui_product != "naip" and not preserve_extracted_files:
                 cleanup_list.append(t)
             # TODO: unlike the files, we don't compare date with input
+            if not use_existing_imported_tiles:
+                # unique names so that they don't clash when running the tool in parallel
+                LT_layer_name = gs.append_uuid(LT_layer_name)
+
             if use_existing_imported_tiles and map_exists(
                 "raster", LT_layer_name, mapset
             ):
