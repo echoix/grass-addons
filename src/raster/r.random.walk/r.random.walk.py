@@ -419,6 +419,11 @@ def main():
     boundary = [rows, cols]
     path_sampling = flags["t"]
     processes = int(options["nprocs"])
+    max_cpus = os.cpu_count() - 1
+    if processes is None:
+        processes = max_cpus
+    if processes < 1:
+        processes = 1
     smooth = int(options["nwalkers"])
     _tmp_rasters = [f"{PREFIX}{i}" for i in range(0, smooth)]
     TMP_RASTERS.append(_tmp_rasters)
