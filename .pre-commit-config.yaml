@@ -51,6 +51,6 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
-    rev: v3.4.0
+    rev: v3.4.1
     hooks:
       - id: editorconfig-checker
