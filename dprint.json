@@ -1,0 +1,9 @@
+{
+    "markup": {
+        "html.normal.selfClosing": true,
+        "html.void.selfClosing": false,
+        "printWidth": 80
+    },
+    "excludes": ["**/node_modules", "**/*-lock.json"],
+    "plugins": ["https://plugins.dprint.dev/g-plane/markup_fmt-v0.26.0.wasm"]
+}
