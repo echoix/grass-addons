@@ -15,7 +15,6 @@ MODULES = \
 	  infrastructure_component \
 	  labels \
 	  land_component \
-	  main \
 	  messages \
 	  mobility \
 	  names \
@@ -26,6 +25,7 @@ MODULES = \
 	  supply_and_use \
 	  utilities \
 	  water_component
+	  main \
 
 PGM = r.estimap.recreation
 LIBDIR = estimap_recreation

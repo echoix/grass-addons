@@ -356,12 +356,18 @@ def run_parallel(
 ):
     gs.message(_("Smoothed Walk"))
     max_cpus = os.cpu_count() - 1
-    gs.message(_("Max CPUs: {0}, Used CPUs: {1}").format(max_cpus, processes))
+    used_cpus = processes
+    if processes is None:
+        used_cpus = max_cpus
+    if processes < 1:
+        used_cpus = 1
+
+    gs.message(_("Max CPUs: {0}, Used CPUs: {1}").format(max_cpus, used_cpus))
     start_pos = False
     if path_sampling:
         start_pos = starting_position(boundary[0], boundary[1])
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=processes) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=used_cpus) as executor:
         future_to_raster = {
             executor.submit(
                 random_walk,
@@ -413,6 +419,11 @@ def main():
     boundary = [rows, cols]
     path_sampling = flags["t"]
     processes = int(options["nprocs"])
+    max_cpus = os.cpu_count() - 1
+    if processes is None:
+        processes = max_cpus
+    if processes < 1:
+        processes = 1
     smooth = int(options["nwalkers"])
     _tmp_rasters = [f"{PREFIX}{i}" for i in range(0, smooth)]
     TMP_RASTERS.append(_tmp_rasters)
