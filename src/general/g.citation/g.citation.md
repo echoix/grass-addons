@@ -31,6 +31,9 @@ acquire for the citation.
 - Don't use the `format=dict` for further processing. It is meant for
     exploration of what information the module acquired.
 - The structure of the JSON output is yet not guaranteed.
+- The **-a** flag covers the tools in the GRASS GIS installation
+    directory. Addons installed with *g.extension* are not included, but
+    they can be cited using the **module** option.
 
 ## EXAMPLES
 
