@@ -171,6 +171,14 @@ jobs:
           done < <(find . -type d -name tests | sort)
           exit "$status"
 
+      - name: Check that each tool has a manual page
+        # Runs after the tests, so that a missing manual page does not hide
+        # the test results, but still fails the job.
+        if: ${{ !cancelled() }}
+        run: |
+          cd grass-addons
+          ./.github/workflows/check_manual_pages.sh
+
       - name: Make HTML test report available
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
