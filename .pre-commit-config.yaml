@@ -88,6 +88,14 @@ repos:
           - "--fix"
           # https://github.com/zizmorcore/zizmor-pre-commit/blob/120fe9ac3c965ab7decf67e8b9ca24b274230eed/.pre-commit-hooks.yaml#L10
           - "--no-progress"
+  - repo: local
+    hooks:
+      - id: check-tool-documentation
+        name: check that each tool has its documentation files
+        entry: ./utils/check_tool_documentation.py
+        language: system
+        pass_filenames: false
+        always_run: true
   - repo: https://github.com/editorconfig-checker/editorconfig-checker
     rev: v3.7.0
     hooks:
