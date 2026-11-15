@@ -29,7 +29,7 @@
 # % key: module
 # % type: string
 # % description: GRASS GIS module to be cited
-# % multiple: no
+# % multiple: yes
 # %end
 
 # %option
@@ -56,7 +56,7 @@
 # % description: Inserted before each item
 # %end
 
-# %option G_OPT_F_INPUT
+# %option G_OPT_F_OUTPUT
 # % key: output
 # % type: string
 # % description: Path of the output file
@@ -65,7 +65,8 @@
 
 # %flag
 # % key: a
-# % description: Provide citations for all modules
+# % label: Provide citations for all tools
+# % description: Cite all tools in the GRASS GIS installation directory; addons installed with g.extension are not included
 # %end
 
 # %flag
@@ -128,7 +129,7 @@ def remove_empty_values_from_dict(d):
             if v or isinstance(v, bool)
         }
     elif isinstance(d, list):
-        return [remove_empty_values_from_dict(i) for i in d if i or isinstance(v, bool)]
+        return [remove_empty_values_from_dict(i) for i in d if i or isinstance(i, bool)]
     else:
         return d
 
@@ -193,7 +194,7 @@ def get_datetime_from_documentation(text):
     """Extract time of latest change from manual
     >>> text = "  Latest change: Monday Jun 28 11:54:09 2021 in commit: 1cfc0af029a35a5d6c7dae5ca7204d0eb85dbc55"
     >>> get_datetime_from_documentation(text)
-    datetime.datetime(2022, 9, 18, 23, 55, 9)
+    datetime.datetime(2021, 6, 28, 11, 54, 9)
     """
     date_format = "%A %b %d %H:%M:%S %Y"
     datetime_capture = r"^  (Latest change: )(.*)( in commit: ).*"
@@ -203,14 +204,23 @@ def get_datetime_from_documentation(text):
         match = re.search(
             datetime_capture, text, re.MULTILINE | re.DOTALL | re.IGNORECASE
         )
+    # TODO: raise or fatal? should be in library or module?
+    error_message = (
+        "Cannot extract the time of the latest change from the manual. "
+        "The respective entry does not seem to follow the expected standard."
+    )
+    if not match:
+        raise RuntimeError(error_message)
     try:
         return datetime.strptime(match.group(2).replace("  ", " "), date_format)
     except ValueError:
-        # TODO: raise or fatal? should be in library or module?
-        raise RuntimeError(
-            "Cannot extract the time of the latest change from the manual."
-            "The respective entry does now seem to follow the expected standard."
-        )
+        raise RuntimeError(error_message)
+
+
+# Obfuscated emails are recognized only when they end with one of these
+# top-level domains, so that text such as "(University of Texas)" is not
+# mistaken for an email address.
+EMAIL_TOP_LEVEL_DOMAINS = "com|cz|de|edu|es|eu|fr|gov|it|net|org|uk"
 
 
 def get_email(text):
@@ -232,24 +242,26 @@ def get_email(text):
     >>> email, text = get_email("Maris Nartiss (maris.nartiss gmail.com)")
     >>> print(text)
     Maris Nartiss
+    >>> print(email)
+    maris.nartiss@gmail.com
     """
     email = None
-    # ORCID as text
     email_re = re.compile(r"\(([^@]+@[^@]+\.[^@]+)\)", re.IGNORECASE)
     match = re.search(email_re, text)
     if match:
         email = match.group(1)
     else:
-        for domain in ["com", "es", "it"]:
-            email_re = re.compile(
-                r"\(([^ ]+) ([^ ]+) ({})\)".format(domain), re.IGNORECASE
+        # In the obfuscated form, the at sign and possibly also the last dot
+        # are replaced by spaces.
+        email_re = re.compile(
+            r"\(([^\s()]+) ([^\s()]+?)[ .]({})\)".format(EMAIL_TOP_LEVEL_DOMAINS),
+            re.IGNORECASE,
+        )
+        match = re.search(email_re, text)
+        if match:
+            email = "{name}@{service}.{domain}".format(
+                name=match.group(1), service=match.group(2), domain=match.group(3)
             )
-            match = re.search(email_re, text)
-            if match:
-                email = "{name}@{service}.{domain}".format(
-                    name=match.group(1), service=match.group(2), domain=match.group(3)
-                )
-                break
     text = re.sub(email_re, "", text).strip()
     return (email, text)
 
@@ -338,12 +350,12 @@ def get_authors_from_documentation(text):
             feature_heading = line[:-1]
             continue
 
-        email, text = get_email(text)
-        orcid, text = get_orcid(text)
+        # Email and ORCID belong to the author on this line, so they are
+        # taken from the line, not from the whole documentation text.
+        email, line = get_email(line)
+        orcid, line = get_orcid(line)
         ai = line.split(",", 1)
         name = clean_line_item(ai[0])
-        if not email:
-            email, name = get_email(name)
         if len(ai) == 2:
             institute = clean_line_item(ai[1])
         if " by " in name:
@@ -429,7 +441,7 @@ except ImportError:
     pass
 
 
-def print_using_citeproc(csl_json, keys, style):
+def print_using_citeproc(csl_json, keys, style, output):
     from citeproc import CitationStylesStyle, CitationStylesBibliography
     from citeproc import Citation, CitationItem
     from citeproc import formatter
@@ -453,7 +465,7 @@ def print_using_citeproc(csl_json, keys, style):
         # unused = bibliography.cite(citation, warn_missing_key)
         unused = bibliography.cite(citation, warn)
     for item in bibliography.bibliography():
-        print(str(item))
+        print(str(item), file=output)
 
 
 # TODO: Jr. separated by comma
@@ -483,15 +495,14 @@ def author_name_to_cff(text):
     roman = "IVX"  # if you are 40th, we will fix it for you
 
     def is_suffix(text):
-        text = text.lower()
+        lowercase = text.lower()
         for suffix in suffixes:
-            if text == suffix:
+            if lowercase == suffix:
                 return True
-            elif len(suffix) <= 3 and text == suffix + ".":
+            elif len(suffix) <= 3 and lowercase == suffix + ".":
                 return True
-        if text.isupper():
-            bool([char for char in text if char in roman])
-        return False
+        # Generational suffixes are also written as Roman numerals.
+        return text.isupper() and all(char in roman for char in text)
 
     def is_middle_initial(text):
         if text.isupper():
@@ -552,7 +563,7 @@ def print_cff(citation, output):
     >>> cit = {'module': 'g.tst', 'authors': authors, 'year': 2011}
     >>> cit.update({'grass-version': '7.4.1'})
     >>> cit.update({'grass-build-date': '2018-06-07'})
-    >>> print_cff(cit)
+    >>> print_cff(cit, sys.stdout)
     cff-version: 1.0.3
     message: "If you use this software, please cite it as below."
     authors:
@@ -656,11 +667,16 @@ def print_bibtex(citation, output):
     :param dict citation: module citation
     :output_io.TextIOWrapper output: sys.stdout or text file stream
 
-    >>> print_bibtex({'module': 'g.tst', 'authors': [{'name': 'Joe Doe'}], 'year': 2011})
-    @software{g.tst,
-      title = {GRASS GIS: g.tst module},
+    >>> cit = {'module': 'g.tst', 'authors': [{'name': 'Joe Doe'}], 'year': 2011}
+    >>> cit.update({'code-url': 'https://example.com/g.tst'})
+    >>> cit.update({'access': '2018-06-07T12:00:00'})
+    >>> print_bibtex(cit, sys.stdout)
+    @misc{g_tst,
+      title = {{GRASS GIS: g.tst module}},
       author = {Joe Doe},
-      year = {2011}
+      howpublished = {https://example.com/g.tst},
+      year = {2011},
+      note = {Accessed: 2018-06-07T12:00:00},
     }
     """
     # TODO: make this an option to allow for software in case it is supported
@@ -775,7 +791,7 @@ def print_chicago_footnote(citation, output):
         elif i < num_authors - 1:
             # likely with comma but unclear for footnote style
             authors_text += ", and "
-    title = "GRASSS GIS module {}".format(citation["module"])
+    title = "GRASS GIS module {}".format(citation["module"])
     print(
         "{authors_text}, {title} ({grass-version}), computer software ({year}).".format(
             authors_text=authors_text, title=title, **citation
@@ -790,7 +806,7 @@ def print_plain(citation, output):
     :param dict citation: module citation
     :output_io.TextIOWrapper output: sys.stdout or text file stream
 
-    >>> print_plain({'module': 'g.tst', 'authors': [{'name': 'Joe Doe'}]})
+    >>> print_plain({'module': 'g.tst', 'authors': [{'name': 'Joe Doe'}]}, sys.stdout)
     GRASS GIS module g.tst
     Joe Doe
     """
@@ -826,12 +842,13 @@ _FORMAT_FUNCTION = {
 }
 
 
-def print_citation(citation, format, output):
+def print_citation(citation, format, output, style="harvard1"):
     """Create citation from dictionary in a given format
 
     :param dict citation: module citation
     :param str format: citation format
     :output_io.TextIOWrapper output: sys.stdout or text file stream
+    :param str style: citation style used by the citeproc format
     """
     # only catch the specific dict access, don't call the function
 
@@ -839,7 +856,10 @@ def print_citation(citation, format, output):
     # (alternatively all funs can have the most rich unified interface)
     if format == "citeproc":
         print_using_citeproc(
-            internal_to_csl_json(citation), [citation["module"]], style="harvard1"
+            internal_to_csl_json(citation),
+            [citation["module"]],
+            style=style,
+            output=output,
         )
         return
     try:
@@ -969,7 +989,7 @@ def main(options, flags):
             if vertical_separator:
                 # TODO: decide if we want the newline here or not
                 print(vertical_separator, file=output)
-            print_citation(citation, output_format, output)
+            print_citation(citation, output_format, output, style=options["style"])
         except RuntimeError as error:
             message = _("Module {name}: {error}").format(**locals())
             if flags["s"]:
