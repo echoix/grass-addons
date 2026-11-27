@@ -216,7 +216,11 @@ def scene_region(session, scene):
 
 @pytest.fixture(scope="module")
 def tool(session, tmp_path_factory):
-    """Install the script like g.extension does, so that g.parser can run it."""
+    """Use the installed addon, or install the script like g.extension does."""
+    # A shebang script is not runnable on Windows, where the installed
+    # addon has a .bat launcher on PATH instead.
+    if shutil.which("i.sentinel3.import"):
+        return "i.sentinel3.import"
     installed = tmp_path_factory.mktemp("addon") / "i.sentinel3.import"
     lines = SCRIPT.read_text(encoding="utf-8").splitlines(keepends=True)
     installed.write_text(f"#!{sys.executable}\n" + "".join(lines[1:]), encoding="utf-8")
