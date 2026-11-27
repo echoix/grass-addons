@@ -120,7 +120,7 @@ the ROSETTA pedotransfer model."""
 
 # %flag
 # % key: u
-# % description: Also write per-parameter uncertainty (standard deviation) maps as <output>_stddev
+# % description: Also write per-parameter uncertainty (standard deviation) maps named with the suffix _stddev
 # %end
 
 # %rules
