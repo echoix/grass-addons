@@ -42,8 +42,8 @@ terrain as possible rockfall sources, for example:
 
 ```bash
 g.region rast=dem
-r.slope.aspect –e elevation=dem slope=slope
-r.mapcalc “sources = if(slope>50,10,null())”
+r.slope.aspect -e elevation=dem slope=slope
+r.mapcalc "sources = if(slope>50,10,null())"
 ```
 
 to simulate 10 trajectories originating from each cell with slope larger than
@@ -56,8 +56,8 @@ the input raster maps as follows:
 
 ```bash
 v.db.addcolumn map=geology columns='friction real, nrest integer, vrest integer'
-db.execute sql=”update geology set friction=0.65 where class_id=1”
-db.execute sql=”update geology set friction=0.80 where class_id=2”
+db.execute sql="update geology set friction=0.65 where class_id=1"
+db.execute sql="update geology set friction=0.80 where class_id=2"
 ...
 v.to.rast input=geology use=attr attribute_column=friction output=friction 
 ```
@@ -115,7 +115,7 @@ Italy.
 | Consolidated clastic deposits | 0.40 | 55 | 65 |
 | Marl | 0.40 | 55 | 65 |
 | Carbonates-siliciclastic and marl sequence | 0.35 | 60 | 70 |
-| Chaotic rocks, mélange | 0.35 | 45 | 55 |
+| Chaotic rocks, melange | 0.35 | 45 | 55 |
 | Flysch | 0.40 | 55 | 65 |
 | Carbonate Rocks | 0.30 | 65 | 75 |
 | Evaporites | 0.35 | 45 | 55 |
@@ -123,7 +123,7 @@ Italy.
 | Lava and basalts | 0.30 | 65 | 75 |
 | Intrusive igneous rocks | 0.30 | 65 | 75 |
 | Schists | 0.35 | 60 | 70 |
-| Non–schists | 0.30 | 65 | 75 |
+| Non-schists | 0.30 | 65 | 75 |
 | Lakes, glaciers | 0.95 | 10 | 10 |
 
 ### Sample output
