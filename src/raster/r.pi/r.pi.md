@@ -161,7 +161,7 @@ the module and might also be influenced by the resolution.
 ## REFERENCE
 
 - Wegmann, M., Leutner, B. F., Metz, M., Neteler, M., Dech, S., &
-    Rocchini, D. (2018). *r. pi: A grass gis package for semi‐automatic
+    Rocchini, D. (2018). *r. pi: A grass gis package for semi-automatic
     spatial pattern analysis of remotely sensed land cover data.*
     Methods in Ecology and Evolution, 9(1), 191-199.
     <https://doi.org/10.1111/2041-210X.12827>
